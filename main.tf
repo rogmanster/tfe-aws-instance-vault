@@ -53,7 +53,7 @@ resource "aws_security_group" "allow_all" {
   }
 }
 
-resource "aws_instance" "ubuntu" {
+resource "aws_instance" "instance" {
   ami               = data.aws_ami.rhel_ami.id
   instance_type     = var.instance_type
   availability_zone = "${var.aws_region}a"
