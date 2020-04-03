@@ -1,11 +1,12 @@
-output "public_dns" {
-  value = aws_instance.ubuntu.public_dns
-}
+output "AWS_Secret_Engine_Output" {
+  value = <<README
 
-output "public_ip" {
-  value = aws_instance.ubuntu.public_ip
-}
+EC2 Instance IP: ${module.instance.public_ip}
 
-output "private_key_pem" {
-  value = tls_private_key.awskey.private_key_pem
+ssh -i awskey.pem ec2-user@${module.instance.public_ip}
+
+AWS Keys used by Terraform to provision Instances:
+Access Key: ${module.instance.access_key}
+Secret Key: ${module.instance.secret_key}
+README
 }
