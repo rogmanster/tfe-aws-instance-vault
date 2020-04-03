@@ -12,21 +12,17 @@ data "aws_ami" "rhel_ami" {
   }
 }
 
-#VAULT_ADDR & VAULT_TOKEN exported via ENV variables
-provider "vault" {
-}
-
 #Generate Dynamic IAM creds
 data "vault_aws_access_credentials" "creds" {
-  backend = "aws"
-  role    = "deploy"
+  backend = var.path
+  role    = var.role_name
 }
 
 provider "aws" {
-  access_key = "${data.vault_aws_access_credentials.creds.access_key}"
-  secret_key = "${data.vault_aws_access_credentials.creds.secret_key}"
-  region = "${var.aws_region}"
-  profile = "${var.aws_profile}"
+  access_key = data.vault_aws_access_credentials.creds.access_key
+  secret_key = data.vault_aws_access_credentials.creds.secret_key
+  region = var.aws_region
+  profile = var.aws_profile
 }
 
 resource "random_id" "name" {
@@ -71,3 +67,4 @@ resource "aws_instance" "ubuntu" {
     Description = "This branch updated v5 - test"
   }
 }
+
