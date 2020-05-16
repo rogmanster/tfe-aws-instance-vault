@@ -2,14 +2,7 @@ terraform {
   required_version = ">= 0.12.0"
 }
 
-data "aws_ami" "rhel_ami" {
-  most_recent = true
-  owners      = ["309956199498"]
-
-  filter {
-    name   = "name"
-    values = ["*RHEL-7.3_HVM_GA-*"]
-  }
+provider "vault" {
 }
 
 #Generate Dynamic IAM creds
@@ -50,6 +43,16 @@ resource "aws_security_group" "allow_all" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+data "aws_ami" "rhel_ami" {
+  most_recent = true
+  owners      = ["309956199498"]
+
+  filter {
+    name   = "name"
+    values = ["*RHEL-7.3_HVM_GA-*"]
   }
 }
 
